@@ -7,14 +7,14 @@ export default defineManifest({
   version: packageData.version,
   manifest_version: 3,
   icons: {
-    16: 'img/logo-16.png',
-    32: 'img/logo-34.png',
-    48: 'img/logo-48.png',
-    128: 'img/logo-128.png',
+    16: 'icons/logo-16.png',
+    32: 'icons/logo-34.png',
+    48: 'icons/logo-48.png',
+    128: 'icons/logo-128.png',
   },
   action: {
     default_popup: 'popup.html',
-    default_icon: 'img/logo-48.png',
+    default_icon: 'icons/logo-48.png',
   },
   content_scripts: [
     {
@@ -25,8 +25,20 @@ export default defineManifest({
   ],
   web_accessible_resources: [
     {
-      resources: ['img/logo-16.png', 'img/logo-34.png', 'img/logo-48.png', 'img/logo-128.png'],
-      matches: [],
+      resources: [
+        'img/loading.png',
+        'img/iron.png',
+        'img/bronze.png',
+        'img/silver.png',
+        'img/gold.png',
+        'img/emerald.png',
+        'img/platinum.png',
+        'img/diamond.png',
+        'img/master.png',
+        'img/grandmaster.png',
+        'img/challenger.png',
+      ],
+      matches: ['*://*.twitch.tv/*'],
     },
   ],
   host_permissions: ['*://*.twitch.tv/*'],
