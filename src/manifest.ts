@@ -12,10 +12,6 @@ export default defineManifest({
     48: 'icons/logo-48.png',
     128: 'icons/logo-128.png',
   },
-  action: {
-    default_popup: 'popup.html',
-    default_icon: 'icons/logo-48.png',
-  },
   content_scripts: [
     {
       matches: ['*://*.twitch.tv/*'],
