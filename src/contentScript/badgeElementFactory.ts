@@ -16,6 +16,7 @@ export class BadgeElementFactory {
     const iconElement = document.createElement('img')
 
     iconElement.classList.add('chat-badge')
+
     if (userLolRanking.lolTier && userLolRanking.lolRank) {
       iconElement.src = chrome.runtime.getURL(`img/${userLolRanking.lolTier.toLowerCase()}.png`)
       iconElement.ariaLabel = `${userLolRanking.lolTier} ${userLolRanking.lolRank}`

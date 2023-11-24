@@ -1,4 +1,4 @@
-import pRetry, { AbortError } from 'p-retry'
+import pRetry from 'p-retry'
 
 export interface ObservePayload {
   onChatMessage: (chatMessageElement: Element) => void
@@ -23,7 +23,7 @@ export class TwitchChat {
         const chatElement = document.querySelector(this.chatElementSelector)
 
         if (!chatElement) {
-          throw new AbortError('No chat element found.')
+          throw new Error('No chat element found.')
         }
 
         return chatElement
@@ -32,7 +32,6 @@ export class TwitchChat {
         retries: retryCount,
         minTimeout: 1000,
         maxTimeout: 1000,
-        factor: 1,
       },
     )
   }
