@@ -1,12 +1,12 @@
 import axios from 'axios'
 
-import { Cache } from './cache'
-import { UserLolRanking } from './userLolRanking'
 import { BatchQueue } from './batchQueue'
-import { CacheFactory } from './cacheFactory'
 import { BatchQueueFactory } from './batchQueueFactory'
-import { LoggerFactory } from './loggerFactory'
+import { Cache } from './cache'
+import { CacheFactory } from './cacheFactory'
 import { Logger } from './logger'
+import { LoggerFactory } from './loggerFactory'
+import { UserLolRanking } from './userLolRanking'
 
 export class UserLolRankingService {
   private cacheExpirationTime = 1000 * 60 * 60 * 3
@@ -76,15 +76,5 @@ export class UserLolRankingService {
         resolve(userLolRanking)
       })
     })
-  }
-
-  public async isUserLolRankingCached(twitchUsername: string): Promise<boolean> {
-    const cachedUserLolRanking = this.usersRankingsCache.get(twitchUsername)
-
-    if (cachedUserLolRanking) {
-      return true
-    }
-
-    return false
   }
 }
