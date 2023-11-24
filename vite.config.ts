@@ -1,5 +1,6 @@
 import { defineConfig } from 'vite'
 import { crx } from '@crxjs/vite-plugin'
+import topLevelAwait from 'vite-plugin-top-level-await'
 import manifest from './src/manifest'
 
 // https://vitejs.dev/config/
@@ -15,6 +16,12 @@ export default defineConfig(({ mode }) => {
       },
     },
 
-    plugins: [crx({ manifest })],
+    plugins: [
+      topLevelAwait({
+        promiseExportName: '__dv',
+        promiseImportName: (i) => `__dv_${i}`,
+      }),
+      crx({ manifest }),
+    ],
   }
 })
