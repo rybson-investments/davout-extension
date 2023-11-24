@@ -1,4 +1,5 @@
 import { defineManifest } from '@crxjs/vite-plugin'
+
 import packageData from '../package.json'
 
 export default defineManifest({
@@ -11,6 +12,9 @@ export default defineManifest({
     32: 'icons/logo-34.png',
     48: 'icons/logo-48.png',
     128: 'icons/logo-128.png',
+  },
+  background: {
+    service_worker: 'src/background/index.ts',
   },
   content_scripts: [
     {
@@ -38,4 +42,7 @@ export default defineManifest({
   ],
   host_permissions: ['*://*.twitch.tv/*'],
   permissions: ['scripting', 'storage', 'activeTab'],
+  externally_connectable: {
+    matches: ['https://davout.io/*'],
+  },
 })
