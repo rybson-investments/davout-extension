@@ -40,22 +40,12 @@ export class Application {
           return
         }
 
-        const isUserLolRankingCached = await this.userLolRankingService.isUserLolRankingCached(twitchUsername)
-
-        let temporaryBadgeElement: Element | null = null
-
-        if (!isUserLolRankingCached) {
-          this.logger.debug('UserLolRanking is not cached.', {
-            twitchUsername,
-          })
-
-          temporaryBadgeElement = this.badgeElementFactory.createTemporaryBadgeElement()
-
-          twitchChat.appendBadgeElement(chatMessageElement, temporaryBadgeElement)
-        }
-
         try {
           const userLolRanking = await this.userLolRankingService.getUserLolRanking(twitchUsername)
+
+          if (!userLolRanking.lolRank) {
+            return
+          }
 
           this.logger.debug('UserLolRanking found.', {
             twitchUsername,
@@ -64,11 +54,7 @@ export class Application {
 
           const userLolRankingBadgeElement = this.badgeElementFactory.createUserLolRankingBadgeElement(userLolRanking)
 
-          if (temporaryBadgeElement) {
-            twitchChat.replaceBadgeElement(chatMessageElement, temporaryBadgeElement, userLolRankingBadgeElement)
-          } else {
-            twitchChat.appendBadgeElement(chatMessageElement, userLolRankingBadgeElement)
-          }
+          twitchChat.appendBadgeElement(chatMessageElement, userLolRankingBadgeElement)
         } catch (error) {
           this.logger.error('UserLolRanking not found.', {
             twitchUsername,
