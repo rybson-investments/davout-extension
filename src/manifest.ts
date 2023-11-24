@@ -26,6 +26,7 @@ export default defineManifest({
   web_accessible_resources: [
     {
       resources: [
+        'img/unranked.png',
         'img/loading.png',
         'img/iron.png',
         'img/bronze.png',

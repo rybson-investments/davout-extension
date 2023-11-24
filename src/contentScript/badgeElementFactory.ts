@@ -20,6 +20,7 @@ export class BadgeElementFactory {
       iconElement.src = chrome.runtime.getURL(`img/${userLolRanking.lolTier.toLowerCase()}.png`)
       iconElement.ariaLabel = `${userLolRanking.lolTier} ${userLolRanking.lolRank}`
     } else {
+      iconElement.src = chrome.runtime.getURL(`img/unranked.png`)
       iconElement.ariaLabel = `N/A`
     }
 
