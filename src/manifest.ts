@@ -41,7 +41,6 @@ export default defineManifest({
     },
   ],
   host_permissions: ['*://*.twitch.tv/*'],
-  permissions: ['scripting', 'storage', 'activeTab'],
   externally_connectable: {
     matches: ['https://davout.io/*'],
   },
