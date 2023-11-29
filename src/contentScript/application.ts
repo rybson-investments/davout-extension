@@ -1,4 +1,3 @@
-import { BadgeElementFactory } from './badgeElementFactory'
 import { HistoryObserver, HistoryObserverEventName } from './historyObserver'
 import { Logger } from './logger'
 import { LoggerFactory } from './loggerFactory'
@@ -10,26 +9,22 @@ export class Application {
   private readonly userLolRankingService: UserLolRankingService
   private readonly historyObserver: HistoryObserver
   private readonly twitchChatFactory: TwitchChatFactory
-  private readonly badgeElementFactory: BadgeElementFactory
   private readonly logger: Logger
 
   public constructor(
     historyObserver: HistoryObserver,
     userLolRankingService: UserLolRankingService,
     twitchChatFactory: TwitchChatFactory,
-    badgeElementFactory: BadgeElementFactory,
     loggerFactory: LoggerFactory,
   ) {
     this.userLolRankingService = userLolRankingService
     this.historyObserver = historyObserver
     this.twitchChatFactory = twitchChatFactory
-    this.badgeElementFactory = badgeElementFactory
     this.logger = loggerFactory.create('Application')
   }
 
   private async initTwitchChat(): Promise<TwitchChat> {
-    const twitchChat = this.twitchChatFactory.create()
-
+    const twitchChat = await this.twitchChatFactory.create()
     this.logger.debug('Initializing Twitch chat...')
 
     await twitchChat.observe({
@@ -51,8 +46,7 @@ export class Application {
             twitchUsername,
             userLolRanking,
           })
-
-          const userLolRankingBadgeElement = this.badgeElementFactory.createUserLolRankingBadgeElement(userLolRanking)
+          const userLolRankingBadgeElement = twitchChat.createUserLolRankingBadgeElement(userLolRanking)
 
           twitchChat.appendBadgeElement(chatMessageElement, userLolRankingBadgeElement)
         } catch (error) {
