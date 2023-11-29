@@ -1,15 +1,15 @@
 import pRetry from 'p-retry'
+import { UserLolRanking } from './userLolRanking'
 
 export interface ObservePayload {
   onChatMessage: (chatMessageElement: Element) => void
 }
 
-// TODO: NativeChat, SevenTvChat
 export class TwitchChat {
   private chatObserver: MutationObserver | null = null
   private chatElement: Element | null = null
 
-  private readonly chatElementSelector = '.chat-scrollable-area__message-container'
+  chatElementSelector = '.chat-scrollable-area__message-container'
 
   private async findChatElement(): Promise<Element | null> {
     const retryCount = 5
@@ -110,5 +110,75 @@ export class TwitchChat {
     const twitchUsername = chatMessageElement.getAttribute('data-a-user')
 
     return twitchUsername || null
+  }
+
+  public createUserLolRankingBadgeElement(userLolRanking: UserLolRanking): Element {
+    const badgeElement = document.createElement('div')
+
+    badgeElement.style.display = 'inline'
+    badgeElement.style.backgroundColor = '#2f2f2f2'
+
+    const buttonElement = document.createElement('button')
+
+    buttonElement.dataset.aTarget = 'chat-badge'
+
+    const iconElement = document.createElement('img')
+
+    iconElement.classList.add('chat-badge')
+
+    if (userLolRanking.lolTier && userLolRanking.lolRank) {
+      iconElement.src = chrome.runtime.getURL(`img/${userLolRanking.lolTier.toLowerCase()}.png`)
+      iconElement.ariaLabel = `${userLolRanking.lolTier} ${userLolRanking.lolRank}`
+    } else {
+      iconElement.src = chrome.runtime.getURL(`img/unranked.png`)
+      iconElement.ariaLabel = `N/A`
+    }
+
+    buttonElement.appendChild(iconElement)
+
+    badgeElement.appendChild(buttonElement)
+
+    return badgeElement
+  }
+}
+
+export class SevenTvChat extends TwitchChat {
+  chatElementSelector = '#seventv-message-container > main'
+
+  public getTwitchUsername(chatMessageElement: Element): string | null {
+    const twitchUsername = chatMessageElement.querySelector('.seventv-chat-user-username span span')?.innerHTML
+
+    return twitchUsername?.toLowerCase() || null
+  }
+
+  public appendBadgeElement(chatMessageElement: Element, badgeElement: Element): Element | null {
+    const iconContainerElement = chatMessageElement.querySelector('.seventv-chat-user-badge-list')
+    if (iconContainerElement) {
+      iconContainerElement.appendChild(badgeElement)
+    }
+
+    return iconContainerElement
+  }
+
+  public createUserLolRankingBadgeElement(userLolRanking: UserLolRanking): Element {
+    const badgeElement = document.createElement('div')
+
+    badgeElement.style.display = 'inline'
+    badgeElement.style.marginLeft = '0.25rem'
+    badgeElement.classList.add('seventv-chat-badge')
+
+    const iconElement = document.createElement('img')
+
+    if (userLolRanking.lolTier && userLolRanking.lolRank) {
+      iconElement.src = chrome.runtime.getURL(`img/${userLolRanking.lolTier.toLowerCase()}.png`)
+      iconElement.ariaLabel = `${userLolRanking.lolTier} ${userLolRanking.lolRank}`
+    } else {
+      iconElement.src = chrome.runtime.getURL(`img/gold.png`)
+      iconElement.ariaLabel = `N/A`
+    }
+
+    badgeElement.appendChild(iconElement)
+
+    return badgeElement
   }
 }
