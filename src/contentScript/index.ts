@@ -1,5 +1,4 @@
 import { Application } from './application'
-import { BadgeElementFactory } from './badgeElementFactory'
 import { BatchQueueFactory } from './batchQueueFactory'
 import { CacheFactory } from './cacheFactory'
 import { HistoryObserver } from './historyObserver'
@@ -17,15 +16,8 @@ async function init() {
     const historyObserver = new HistoryObserver(loggerFactory)
     const userLolRankingService = new UserLolRankingService(loggerFactory, cacheFactory, batchQueueFactory)
     const twitchChatFactory = new TwitchChatFactory()
-    const badgeElementFactory = new BadgeElementFactory()
 
-    const application = new Application(
-      historyObserver,
-      userLolRankingService,
-      twitchChatFactory,
-      badgeElementFactory,
-      loggerFactory,
-    )
+    const application = new Application(historyObserver, userLolRankingService, twitchChatFactory, loggerFactory)
 
     await application.start()
   } catch (error) {
