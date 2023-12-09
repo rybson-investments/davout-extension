@@ -25,6 +25,7 @@ export class Application {
 
   private async initTwitchChat(): Promise<TwitchChat> {
     const twitchChat = await this.twitchChatFactory.create()
+
     this.logger.debug('Initializing Twitch chat...')
 
     await twitchChat.observe({
@@ -38,6 +39,8 @@ export class Application {
         try {
           const userLolRanking = await this.userLolRankingService.getUserLolRanking(twitchUsername)
 
+          console.log({ userLolRanking })
+
           if (!userLolRanking.lolRank) {
             return
           }
@@ -46,6 +49,7 @@ export class Application {
             twitchUsername,
             userLolRanking,
           })
+
           const userLolRankingBadgeElement = twitchChat.createUserLolRankingBadgeElement(userLolRanking)
 
           twitchChat.appendBadgeElement(chatMessageElement, userLolRankingBadgeElement)

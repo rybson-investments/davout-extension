@@ -1,5 +1,4 @@
 import { Application } from './application'
-import { BatchQueueFactory } from './batchQueueFactory'
 import { CacheFactory } from './cacheFactory'
 import { HistoryObserver } from './historyObserver'
 import { LogLevel } from './logger'
@@ -9,12 +8,11 @@ import { UserLolRankingService } from './userLolRankingService'
 
 async function init() {
   try {
-    const loggerFactory = new LoggerFactory(LogLevel.info)
+    const loggerFactory = new LoggerFactory(LogLevel.debug)
     const cacheFactory = new CacheFactory(loggerFactory)
-    const batchQueueFactory = new BatchQueueFactory()
 
     const historyObserver = new HistoryObserver(loggerFactory)
-    const userLolRankingService = new UserLolRankingService(loggerFactory, cacheFactory, batchQueueFactory)
+    const userLolRankingService = new UserLolRankingService(loggerFactory, cacheFactory)
     const twitchChatFactory = new TwitchChatFactory()
 
     const application = new Application(historyObserver, userLolRankingService, twitchChatFactory, loggerFactory)

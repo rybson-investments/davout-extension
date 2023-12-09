@@ -1,7 +1,5 @@
 import axios from 'axios'
 
-import { BatchQueue } from './batchQueue'
-import { BatchQueueFactory } from './batchQueueFactory'
 import { Cache } from './cache'
 import { CacheFactory } from './cacheFactory'
 import { Logger } from './logger'
@@ -9,59 +7,15 @@ import { LoggerFactory } from './loggerFactory'
 import { UserLolRanking } from './userLolRanking'
 
 export class UserLolRankingService {
-  private cacheExpirationTime = 1000 * 60 * 60 * 3
+  private cacheExpirationTime = 1000 * 60 * 60 * 4 // 4 hours
 
   private readonly usersRankingsCache: Cache<string, UserLolRanking>
 
-  private readonly usersLolRankingsQueue: BatchQueue<string, UserLolRanking>
   private readonly logger: Logger
 
-  public constructor(loggerFactory: LoggerFactory, cacheFactory: CacheFactory, batchQueueFactory: BatchQueueFactory) {
+  public constructor(loggerFactory: LoggerFactory, cacheFactory: CacheFactory) {
     this.usersRankingsCache = cacheFactory.create<string, UserLolRanking>('usersLolRankings')
-    this.usersLolRankingsQueue = batchQueueFactory.create<string, UserLolRanking>(5000, (items) =>
-      this.processUsersLolRankingsQueue(items),
-    )
     this.logger = loggerFactory.create('UserLolRankingService')
-
-    this.usersLolRankingsQueue.start()
-  }
-
-  private async processUsersLolRankingsQueue(twitchUsernames: string[]): Promise<UserLolRanking[]> {
-    const uniqueTwitchUsernames = [...new Set(twitchUsernames)]
-
-    const userLolRankingByTwitchUsername = new Map<string, UserLolRanking>()
-
-    this.logger.debug('Finding usersLolRankings...', {
-      twitchUsernames: uniqueTwitchUsernames,
-    })
-
-    await axios
-      .post('https://api.davout.io/api/users/rankings/search', {
-        twitchUsernames: uniqueTwitchUsernames,
-      })
-      .then((res) => {
-        const usersLolRankings = res.data.usersRankings
-
-        // TODO: better error handling
-        if (!usersLolRankings) {
-          throw new Error('No usersLolRankings found.')
-        }
-
-        this.logger.debug('UsersLolRankings found.', {
-          twitchUsernames: uniqueTwitchUsernames,
-          usersLolRankings,
-        })
-
-        usersLolRankings.forEach((userLolRanking: UserLolRanking) => {
-          this.usersRankingsCache.set(userLolRanking.twitchUsername, userLolRanking, this.cacheExpirationTime)
-
-          userLolRankingByTwitchUsername.set(userLolRanking.twitchUsername, userLolRanking)
-        })
-      })
-
-    return twitchUsernames.map((twitchUsername) => {
-      return userLolRankingByTwitchUsername.get(twitchUsername) as UserLolRanking
-    })
   }
 
   public async getUserLolRanking(twitchUsername: string): Promise<UserLolRanking> {
@@ -71,10 +25,17 @@ export class UserLolRankingService {
       return cachedUserLolRanking
     }
 
-    return new Promise((resolve) => {
-      this.usersLolRankingsQueue.add(twitchUsername, (userLolRanking) => {
-        resolve(userLolRanking)
-      })
+    const { data } = await axios.get(`https://api.davout.io/api/users/rankings/${twitchUsername}`)
+
+    const userLolRanking = data.userRanking
+
+    this.logger.debug('UserLolRanking found.', {
+      twitchUsername,
+      userLolRanking,
     })
+
+    this.usersRankingsCache.set(userLolRanking.twitchUsername, userLolRanking, this.cacheExpirationTime)
+
+    return userLolRanking
   }
 }
