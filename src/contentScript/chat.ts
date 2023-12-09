@@ -5,13 +5,22 @@ export interface ObservePayload {
   onChatMessage: (chatMessageElement: Element) => void
 }
 
-export class TwitchChat {
+interface ChatConfig {
+  chatElementSelector: string
+}
+
+export abstract class Chat {
+  abstract appendBadgeElement(chatMessageElement: Element, badgeElement: Element): Element | null
+  protected chatElement: Element | null = null
+
   private chatObserver: MutationObserver | null = null
-  private chatElement: Element | null = null
+  private readonly config: ChatConfig
 
-  chatElementSelector = '.chat-scrollable-area__message-container'
+  constructor(config: ChatConfig) {
+    this.config = config
+  }
 
-  private async findChatElement(): Promise<Element | null> {
+  private async findChatElement(chatElementSelector: string): Promise<Element | null> {
     const retryCount = 5
 
     return pRetry<Element | null>(
@@ -20,7 +29,7 @@ export class TwitchChat {
           return null
         }
 
-        const chatElement = document.querySelector(this.chatElementSelector)
+        const chatElement = document.querySelector(chatElementSelector)
 
         if (!chatElement) {
           throw new Error('No chat element found.')
@@ -36,36 +45,10 @@ export class TwitchChat {
     )
   }
 
-  public appendBadgeElement(chatMessageElement: Element, badgeElement: Element): Element | null {
-    const iconContainerElement = chatMessageElement.querySelector('.chat-line__username-container span')
-
-    if (iconContainerElement) {
-      iconContainerElement.appendChild(badgeElement)
-    }
-
-    return iconContainerElement
-  }
-
-  public removeBadgeElement(chatMessageElement: Element, badgeElement: Element): void {
-    const iconContainerElement = chatMessageElement.querySelector('.chat-line__username-container span')
-
-    if (iconContainerElement) {
-      iconContainerElement.removeChild(badgeElement)
-    }
-  }
-
-  public replaceBadgeElement(chatMessageElement: Element, oldBadgeElement: Element, newBadgeElement: Element): void {
-    const iconContainerElement = chatMessageElement.querySelector('.chat-line__username-container span')
-
-    if (iconContainerElement) {
-      iconContainerElement.replaceChild(newBadgeElement, oldBadgeElement)
-    }
-  }
-
   public async observe(payload: ObservePayload) {
     const { onChatMessage } = payload
 
-    const chatElement = await this.findChatElement()
+    const chatElement = await this.findChatElement(this.config.chatElementSelector)
 
     if (!chatElement) {
       throw new Error('No chat element found.')
@@ -105,6 +88,22 @@ export class TwitchChat {
   public getChatElement(): Element | null {
     return this.chatElement
   }
+}
+
+export class NativeChat extends Chat {
+  constructor() {
+    super({ chatElementSelector: '.chat-scrollable-area__message-container' })
+  }
+
+  public appendBadgeElement(chatMessageElement: Element, badgeElement: Element): Element | null {
+    const iconContainerElement = chatMessageElement.querySelector('.chat-line__username-container span')
+
+    if (iconContainerElement) {
+      iconContainerElement.appendChild(badgeElement)
+    }
+
+    return iconContainerElement
+  }
 
   public getTwitchUsername(chatMessageElement: Element): string | null {
     const twitchUsername = chatMessageElement.getAttribute('data-a-user')
@@ -142,8 +141,10 @@ export class TwitchChat {
   }
 }
 
-export class SevenTvChat extends TwitchChat {
-  chatElementSelector = '#seventv-message-container > main'
+export class SevenTvChat extends Chat {
+  constructor() {
+    super({ chatElementSelector: '#seventv-message-container > main' })
+  }
 
   public getTwitchUsername(chatMessageElement: Element): string | null {
     const twitchUsername = chatMessageElement.querySelector('.seventv-chat-user-username span span')?.innerHTML

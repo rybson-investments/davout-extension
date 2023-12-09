@@ -1,8 +1,8 @@
 import { HistoryObserver, HistoryObserverEventName } from './historyObserver'
 import { Logger } from './logger'
 import { LoggerFactory } from './loggerFactory'
-import { TwitchChat } from './twitchChat'
-import { TwitchChatFactory } from './twitchChatFactory'
+import { NativeChat } from './chat'
+import { TwitchChatFactory } from './chatFactory'
 import { UserLolRankingService } from './userLolRankingService'
 
 export class Application {
@@ -23,7 +23,7 @@ export class Application {
     this.logger = loggerFactory.create('Application')
   }
 
-  private async initTwitchChat(): Promise<TwitchChat> {
+  private async initTwitchChat(): Promise<NativeChat> {
     const twitchChat = await this.twitchChatFactory.create()
 
     this.logger.debug('Initializing Twitch chat...')
@@ -38,8 +38,6 @@ export class Application {
 
         try {
           const userLolRanking = await this.userLolRankingService.getUserLolRanking(twitchUsername)
-
-          console.log({ userLolRanking })
 
           if (!userLolRanking.lolRank) {
             return

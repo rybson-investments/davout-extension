@@ -1,14 +1,14 @@
 import pRetry from 'p-retry'
-import { SevenTvChat, TwitchChat } from './twitchChat'
+import { SevenTvChat, NativeChat } from './chat'
 
 export class TwitchChatFactory {
-  public async create(): Promise<TwitchChat> {
+  public async create(): Promise<NativeChat> {
     const retryCount = 10
 
-    return pRetry<TwitchChat>(
+    return pRetry<NativeChat>(
       async (attemptCount) => {
         if (attemptCount === retryCount) {
-          return new TwitchChat()
+          return new NativeChat()
         }
 
         if (document.querySelector('#seventv-message-container')) {

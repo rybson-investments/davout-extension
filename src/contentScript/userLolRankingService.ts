@@ -7,7 +7,7 @@ import { LoggerFactory } from './loggerFactory'
 import { UserLolRanking } from './userLolRanking'
 
 export class UserLolRankingService {
-  private cacheExpirationTime = 1000 * 60 * 60 * 4 // 4 hours
+  private cacheExpirationTime = 1000 * 60 * 60 * 2 // 2 hours
 
   private readonly usersRankingsCache: Cache<string, UserLolRanking>
 

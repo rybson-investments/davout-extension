@@ -3,7 +3,7 @@ import { CacheFactory } from './cacheFactory'
 import { HistoryObserver } from './historyObserver'
 import { LogLevel } from './logger'
 import { LoggerFactory } from './loggerFactory'
-import { TwitchChatFactory } from './twitchChatFactory'
+import { TwitchChatFactory } from './chatFactory'
 import { UserLolRankingService } from './userLolRankingService'
 
 async function init() {
