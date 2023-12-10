@@ -1,10 +1,14 @@
-import axios from 'axios'
+import ky from 'ky'
 
-import { Cache } from './cache'
-import { CacheFactory } from './cacheFactory'
-import { Logger } from './logger'
-import { LoggerFactory } from './loggerFactory'
+import { Cache } from '../cache/cache'
+import { CacheFactory } from '../cache/cacheFactory'
+import { Logger } from '../logger/logger'
+import { LoggerFactory } from '../logger/loggerFactory'
 import { UserLolRanking } from './userLolRanking'
+
+interface GetUserLolRankingResponse {
+  userRanking: UserLolRanking
+}
 
 export class UserLolRankingService {
   private cacheExpirationTime = 1000 * 60 * 60 * 2 // 2 hours
@@ -25,9 +29,9 @@ export class UserLolRankingService {
       return cachedUserLolRanking
     }
 
-    const { data } = await axios.get(`https://api.davout.io/api/users/rankings/${twitchUsername}`)
-
-    const userLolRanking = data.userRanking
+    const { userRanking: userLolRanking } = await ky
+      .get(`https://api.davout.io/api/users/rankings/${twitchUsername}`)
+      .json<GetUserLolRankingResponse>()
 
     this.logger.debug('UserLolRanking found.', {
       twitchUsername,

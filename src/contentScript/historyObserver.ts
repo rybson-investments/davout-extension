@@ -1,8 +1,8 @@
 import EventEmitter from 'eventemitter3'
 
-import { Logger } from './logger'
+import { Logger } from './logger/logger'
 import { Interval } from './interval'
-import { LoggerFactory } from './loggerFactory'
+import { LoggerFactory } from './logger/loggerFactory'
 
 export enum HistoryObserverEventName {
   routeChange = 'routeChange',

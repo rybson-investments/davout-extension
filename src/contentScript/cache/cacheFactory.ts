@@ -1,5 +1,5 @@
 import { Cache } from './cache'
-import { LoggerFactory } from './loggerFactory'
+import { LoggerFactory } from '../logger/loggerFactory'
 
 export class CacheFactory {
   private readonly loggerFactory: LoggerFactory

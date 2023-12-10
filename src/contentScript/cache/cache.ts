@@ -1,6 +1,6 @@
-import { Interval } from './interval'
-import { LoggerFactory } from './loggerFactory'
-import { Logger } from './logger'
+import { Interval } from '../interval'
+import { LoggerFactory } from '../logger/loggerFactory'
+import { Logger } from '../logger/logger'
 
 interface CacheItem<Key extends string, Value> {
   key: Key
@@ -22,7 +22,7 @@ export class Cache<Key extends string, Value> {
 
   public constructor(name: string, loggerFactory: LoggerFactory) {
     this.name = name
-    this.interval = new Interval(5000)
+    this.interval = new Interval(10000)
     this.logger = loggerFactory.create('Cache')
 
     this.loadState()

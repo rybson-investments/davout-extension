@@ -1,23 +1,22 @@
-import { Application } from './application'
-import { CacheFactory } from './cacheFactory'
+import { Extension } from './extension'
+import { CacheFactory } from './cache/cacheFactory'
+import { ChatObserverFactory } from './chatObserver/chatObserverFactory'
 import { HistoryObserver } from './historyObserver'
-import { LogLevel } from './logger'
-import { LoggerFactory } from './loggerFactory'
-import { TwitchChatFactory } from './chatFactory'
-import { UserLolRankingService } from './userLolRankingService'
+import { LoggerFactory } from './logger/loggerFactory'
+import { UserLolRankingService } from './userLolRanking/userLolRankingService'
 
 async function init() {
   try {
-    const loggerFactory = new LoggerFactory(LogLevel.debug)
+    const loggerFactory = new LoggerFactory()
     const cacheFactory = new CacheFactory(loggerFactory)
 
     const historyObserver = new HistoryObserver(loggerFactory)
     const userLolRankingService = new UserLolRankingService(loggerFactory, cacheFactory)
-    const twitchChatFactory = new TwitchChatFactory()
+    const chatObserverFactory = new ChatObserverFactory(loggerFactory)
 
-    const application = new Application(historyObserver, userLolRankingService, twitchChatFactory, loggerFactory)
+    const extension = new Extension(historyObserver, userLolRankingService, chatObserverFactory, loggerFactory)
 
-    await application.start()
+    await extension.start()
   } catch (error) {
     console.error(error)
   }
