@@ -63,8 +63,6 @@ export class ChatObserver {
         this.nativeChat.stopObserving()
         this.sevenTvChat.observe({
           onChatMessage: (chatMessageElement) => {
-            this.logger.debug('7tv')
-
             onChatMessage({
               chatMessageElement,
               chat: this.sevenTvChat,
@@ -83,15 +81,15 @@ export class ChatObserver {
           return
         }
 
-        this.logger.debug('Native chat mounted.')
+        this.logger.debug('Native chat mounted.', {
+          nativeChatElement,
+        })
 
         this.currentChat = this.nativeChat
 
         this.sevenTvChat.stopObserving()
         this.nativeChat.observe({
           onChatMessage: (chatMessageElement) => {
-            this.logger.debug('native')
-
             onChatMessage({
               chatMessageElement,
               chat: this.nativeChat,
