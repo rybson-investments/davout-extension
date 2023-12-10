@@ -14,7 +14,6 @@ interface ObservePayload {
   onChatMessage: (payload: OnChatMessagePayload) => void
 }
 
-// TODO: remove p-retry
 export class ChatObserver {
   private readonly logger: Logger
   private readonly interval: Interval
@@ -55,17 +54,22 @@ export class ChatObserver {
           return
         }
 
-        this.logger.debug('7tv chat mounted.')
+        this.logger.debug('7tv chat mounted.', {
+          sevenTvChatElement,
+        })
 
         this.currentChat = this.sevenTvChat
 
         this.nativeChat.stopObserving()
         this.sevenTvChat.observe({
-          onChatMessage: (chatMessageElement) =>
+          onChatMessage: (chatMessageElement) => {
+            this.logger.debug('7tv')
+
             onChatMessage({
               chatMessageElement,
-              chat: this.nativeChat,
-            }),
+              chat: this.sevenTvChat,
+            })
+          },
           chatElement: sevenTvChatElement,
         })
 
@@ -85,11 +89,14 @@ export class ChatObserver {
 
         this.sevenTvChat.stopObserving()
         this.nativeChat.observe({
-          onChatMessage: (chatMessageElement) =>
+          onChatMessage: (chatMessageElement) => {
+            this.logger.debug('native')
+
             onChatMessage({
               chatMessageElement,
               chat: this.nativeChat,
-            }),
+            })
+          },
           chatElement: nativeChatElement,
         })
 

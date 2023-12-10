@@ -32,21 +32,19 @@ export abstract class Chat {
       throw new Error('No chat element found.')
     }
 
-    const observerConfig = { attributes: true, childList: true, sbutree: true }
-
     const observer = new MutationObserver(async (mutationList) => {
       for (const mutation of mutationList) {
         if (mutation.type === 'childList' && mutation.addedNodes.length) {
           const chatMessageElement = mutation.addedNodes[0] as Element
 
-          if (chatMessageElement) {
+          if (chatMessageElement && chatMessageElement.tagName === 'DIV') {
             onChatMessage(chatMessageElement)
           }
         }
       }
     })
 
-    observer.observe(chatElement, observerConfig)
+    observer.observe(chatElement, { childList: true, subtree: true })
 
     this.chatObserver = observer
   }
