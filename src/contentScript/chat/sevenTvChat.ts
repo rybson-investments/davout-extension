@@ -1,4 +1,4 @@
-import { UserLolRanking } from '../userLolRanking/userLolRanking'
+import { UserSummonerRanking } from '../userSummonerRanking/userSummonerRanking'
 import { Chat } from './chat'
 
 export class SevenTvChat extends Chat {
@@ -21,7 +21,7 @@ export class SevenTvChat extends Chat {
     return iconContainerElement
   }
 
-  public createUserLolRankingBadgeElement(userLolRanking: UserLolRanking): Element {
+  public createUserSummonerRankingBadgeElement(userSummonerRanking: UserSummonerRanking): Element {
     const badgeElement = document.createElement('div')
 
     badgeElement.style.display = 'inline'
@@ -30,9 +30,9 @@ export class SevenTvChat extends Chat {
 
     const iconElement = document.createElement('img')
 
-    if (userLolRanking.lolTier && userLolRanking.lolRank) {
-      iconElement.src = chrome.runtime.getURL(`img/${userLolRanking.lolTier.toLowerCase()}.png`)
-      iconElement.ariaLabel = `${userLolRanking.lolTier} ${userLolRanking.lolRank}`
+    if (userSummonerRanking.tier && userSummonerRanking.rank) {
+      iconElement.src = chrome.runtime.getURL(`img/${userSummonerRanking.tier.toLowerCase()}.png`)
+      iconElement.ariaLabel = `${userSummonerRanking.tier} ${userSummonerRanking.rank}`
     } else {
       iconElement.src = chrome.runtime.getURL(`img/gold.png`)
       iconElement.ariaLabel = `N/A`

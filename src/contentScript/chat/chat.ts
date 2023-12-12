@@ -1,4 +1,4 @@
-import { UserLolRanking } from '../userLolRanking/userLolRanking'
+import { UserSummonerRanking } from '../userSummonerRanking/userSummonerRanking'
 
 export interface ObservePayload {
   onChatMessage: (chatMessageElement: Element) => void
@@ -12,7 +12,7 @@ interface ChatConfig {
 export abstract class Chat {
   abstract appendBadgeElement(chatMessageElement: Element, badgeElement: Element): Element | null
   abstract getTwitchUsername(chatMessageElement: Element): string | null
-  abstract createUserLolRankingBadgeElement(userLolRanking: UserLolRanking): Element
+  abstract createUserSummonerRankingBadgeElement(userSummonerRanking: UserSummonerRanking): Element
 
   private chatObserver: MutationObserver | null = null
   private readonly config: ChatConfig

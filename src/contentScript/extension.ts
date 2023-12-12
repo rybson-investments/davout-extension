@@ -3,21 +3,21 @@ import { ChatObserverFactory } from './chatObserver/chatObserverFactory'
 import { HistoryObserver, HistoryObserverEventName } from './historyObserver'
 import { Logger } from './logger/logger'
 import { LoggerFactory } from './logger/loggerFactory'
-import { UserLolRankingService } from './userLolRanking/userLolRankingService'
+import { UserSummonerRankingService } from './userSummonerRanking/userSummonerRankingService'
 
 export class Extension {
-  private readonly userLolRankingService: UserLolRankingService
+  private readonly userSummonerRankingService: UserSummonerRankingService
   private readonly historyObserver: HistoryObserver
   private readonly chatObserverFactory: ChatObserverFactory
   private readonly logger: Logger
 
   public constructor(
     historyObserver: HistoryObserver,
-    userLolRankingService: UserLolRankingService,
+    userSummonerRankingService: UserSummonerRankingService,
     chatObserverFactory: ChatObserverFactory,
     loggerFactory: LoggerFactory,
   ) {
-    this.userLolRankingService = userLolRankingService
+    this.userSummonerRankingService = userSummonerRankingService
     this.historyObserver = historyObserver
     this.chatObserverFactory = chatObserverFactory
     this.logger = loggerFactory.create('Extension')
@@ -37,22 +37,22 @@ export class Extension {
         }
 
         try {
-          const userLolRanking = await this.userLolRankingService.getUserLolRanking(twitchUsername)
+          const userSummonerRanking = await this.userSummonerRankingService.getUserSummonerRanking(twitchUsername)
 
-          if (!userLolRanking.lolRank) {
+          if (!userSummonerRanking.rank) {
             return
           }
 
-          this.logger.debug('UserLolRanking found.', {
+          this.logger.debug('UserSummonerRanking found.', {
             twitchUsername,
-            userLolRanking,
+            userSummonerRanking,
           })
 
-          const userLolRankingBadgeElement = chat.createUserLolRankingBadgeElement(userLolRanking)
+          const userSummonerRankingBadgeElement = chat.createUserSummonerRankingBadgeElement(userSummonerRanking)
 
-          chat.appendBadgeElement(chatMessageElement, userLolRankingBadgeElement)
+          chat.appendBadgeElement(chatMessageElement, userSummonerRankingBadgeElement)
         } catch (error) {
-          this.logger.error('UserLolRanking not found.', {
+          this.logger.error('UserSummonerRanking not found.', {
             twitchUsername,
             error,
           })

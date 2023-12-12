@@ -3,7 +3,7 @@ import { CacheFactory } from './cache/cacheFactory'
 import { ChatObserverFactory } from './chatObserver/chatObserverFactory'
 import { HistoryObserver } from './historyObserver'
 import { LoggerFactory } from './logger/loggerFactory'
-import { UserLolRankingService } from './userLolRanking/userLolRankingService'
+import { UserSummonerRankingService } from './userSummonerRanking/userSummonerRankingService'
 
 async function init() {
   try {
@@ -11,10 +11,10 @@ async function init() {
     const cacheFactory = new CacheFactory(loggerFactory)
 
     const historyObserver = new HistoryObserver(loggerFactory)
-    const userLolRankingService = new UserLolRankingService(loggerFactory, cacheFactory)
+    const userSummonerRankingService = new UserSummonerRankingService(loggerFactory, cacheFactory)
     const chatObserverFactory = new ChatObserverFactory(loggerFactory)
 
-    const extension = new Extension(historyObserver, userLolRankingService, chatObserverFactory, loggerFactory)
+    const extension = new Extension(historyObserver, userSummonerRankingService, chatObserverFactory, loggerFactory)
 
     await extension.start()
   } catch (error) {
