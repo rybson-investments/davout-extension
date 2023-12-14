@@ -7,18 +7,20 @@ import { LoggerFactory } from '../logger/loggerFactory'
 import { UserSummonerRanking } from './userSummonerRanking'
 
 export class UserSummonerRankingService {
-  private cacheExpirationTime = 1000 * 60 * 60 * 2 // 2 hours
+  private cacheExpirationTime = 1000 * 60 * 60 * 4 // 4 hours
 
   private readonly usersSummonerRankingsCache: Cache<string, UserSummonerRanking>
 
   private readonly logger: Logger
 
   public constructor(loggerFactory: LoggerFactory, cacheFactory: CacheFactory) {
-    this.usersSummonerRankingsCache = cacheFactory.create<string, UserSummonerRanking>('usersSummonerRankingsCache')
+    this.usersSummonerRankingsCache = cacheFactory.create<string, UserSummonerRanking>()
     this.logger = loggerFactory.create('UserSummonerRankingService')
   }
 
-  public async getUserSummonerRanking(twitchUsername: string): Promise<UserSummonerRanking> {
+  public async getUserSummonerRanking(unsafeTwitchUsername: string): Promise<UserSummonerRanking> {
+    const twitchUsername = unsafeTwitchUsername.toLowerCase()
+
     const cachedUserSummonerRanking = this.usersSummonerRankingsCache.get(twitchUsername)
 
     if (cachedUserSummonerRanking) {

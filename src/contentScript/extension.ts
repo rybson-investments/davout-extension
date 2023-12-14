@@ -30,11 +30,13 @@ export class Extension {
 
     chatObserver.observe({
       onChatMessage: async ({ chatMessageElement, chat }) => {
-        const twitchUsername = chat.getTwitchUsername(chatMessageElement)
+        const unsafeTwitchUsername = chat.getTwitchUsername(chatMessageElement)
 
-        if (!twitchUsername) {
+        if (!unsafeTwitchUsername) {
           return
         }
+
+        const twitchUsername = unsafeTwitchUsername.toLowerCase()
 
         try {
           const userSummonerRanking = await this.userSummonerRankingService.getUserSummonerRanking(twitchUsername)

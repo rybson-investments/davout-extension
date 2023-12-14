@@ -8,7 +8,7 @@ import { UserSummonerRankingService } from './userSummonerRanking/userSummonerRa
 async function init() {
   try {
     const loggerFactory = new LoggerFactory()
-    const cacheFactory = new CacheFactory(loggerFactory)
+    const cacheFactory = new CacheFactory()
 
     const historyObserver = new HistoryObserver(loggerFactory)
     const userSummonerRankingService = new UserSummonerRankingService(loggerFactory, cacheFactory)

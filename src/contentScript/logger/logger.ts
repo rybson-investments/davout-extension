@@ -6,24 +6,21 @@ export class Logger {
   }
 
   public info(message: string, context = {}): void {
-    console.info({
-      message,
+    console.info(message, {
       context,
       source: this.source,
     })
   }
 
   public debug(message: string, context = {}): void {
-    console.debug({
-      message,
+    console.debug(message, {
       context,
       source: this.source,
     })
   }
 
   public error(message: string, context = {}): void {
-    console.error({
-      message,
+    console.error(message, {
       context,
       source: this.source,
     })

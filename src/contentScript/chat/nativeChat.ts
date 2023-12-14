@@ -19,7 +19,7 @@ export class NativeChat extends Chat {
   public getTwitchUsername(chatMessageElement: Element): string | null {
     const twitchUsername = chatMessageElement.getAttribute('data-a-user')
 
-    return twitchUsername || null
+    return twitchUsername?.toLowerCase() || null
   }
 
   public createUserSummonerRankingBadgeElement(userSummonerRanking: UserSummonerRanking): Element {

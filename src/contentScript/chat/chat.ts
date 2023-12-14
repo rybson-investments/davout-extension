@@ -32,7 +32,14 @@ export abstract class Chat {
       throw new Error('No chat element found.')
     }
 
+    const observedAt = Date.now()
+
     const observer = new MutationObserver(async (mutationList) => {
+      // wait for 1s to not fetch UserSummonerRanking for preloaded messages
+      if (Date.now() - observedAt < 1000) {
+        return
+      }
+
       for (const mutation of mutationList) {
         if (mutation.type === 'childList' && mutation.addedNodes.length) {
           const chatMessageElement = mutation.addedNodes[0] as Element
