@@ -9,13 +9,11 @@ The Davout browser extension
 ## Install
 
 ```shell
-$ npm install
+npm install
 ```
 
 # Development
 
-run the command
-
 ```shell
-$ npm run dev
+npm run dev
 ```
