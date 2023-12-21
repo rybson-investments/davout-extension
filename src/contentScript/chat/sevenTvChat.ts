@@ -21,21 +21,30 @@ export class SevenTvChat extends Chat {
     return iconContainerElement
   }
 
+  public createTooltipElement() {
+    const tooltip = document.createElement('span')
+    tooltip.classList.add('davout_tooltip-seven-tv')
+
+    return tooltip
+  }
+
   public createUserSummonerRankingBadgeElement(userSummonerRanking: UserSummonerRanking): Element {
     const badgeElement = document.createElement('div')
 
     badgeElement.style.display = 'inline'
     badgeElement.style.marginLeft = '0.25rem'
-    badgeElement.classList.add('seventv-chat-badge')
+    badgeElement.classList.add('seventv-chat-badge', 'davout_has-tooltip')
 
     const iconElement = document.createElement('img')
 
+    const tooltip = this.createTooltipElement()
+    badgeElement.appendChild(tooltip)
+
     if (userSummonerRanking.tier && userSummonerRanking.rank) {
+      const tooltipContent = this.getTooltipText(userSummonerRanking)
+      tooltip.innerText = tooltipContent
       iconElement.src = chrome.runtime.getURL(`img/${userSummonerRanking.tier.toLowerCase()}.png`)
-      iconElement.ariaLabel = `${userSummonerRanking.tier} ${userSummonerRanking.rank}`
-    } else {
-      iconElement.src = chrome.runtime.getURL(`img/gold.png`)
-      iconElement.ariaLabel = `N/A`
+      iconElement.ariaLabel = tooltipContent
     }
 
     badgeElement.appendChild(iconElement)

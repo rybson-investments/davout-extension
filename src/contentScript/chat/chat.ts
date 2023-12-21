@@ -13,12 +13,34 @@ export abstract class Chat {
   abstract appendBadgeElement(chatMessageElement: Element, badgeElement: Element): Element | null
   abstract getTwitchUsername(chatMessageElement: Element): string | null
   abstract createUserSummonerRankingBadgeElement(userSummonerRanking: UserSummonerRanking): Element
+  abstract createTooltipElement(): Element
 
   private chatObserver: MutationObserver | null = null
   private readonly config: ChatConfig
 
   constructor(config: ChatConfig) {
     this.config = config
+  }
+
+  public isAboveMasterTier(user: UserSummonerRanking): boolean {
+    return user.tier === 'MASTER' || user.tier === 'GRANDMASTER' || user.tier === 'CHALLENGER'
+  }
+
+  public getLolRegionDisplayName(user: UserSummonerRanking): string {
+    if (user.region === 'euw') return 'EUW'
+    if (user.region === 'eun') return 'EUNE'
+
+    return 'N/A'
+  }
+
+  public getTooltipText(user: UserSummonerRanking): string {
+    const regionDisplayName = this.getLolRegionDisplayName(user)
+    const tierDisplayName = user.tier?.toLowerCase()
+
+    if (this.isAboveMasterTier(user)) {
+      return `${tierDisplayName} - ${user.leaguePoints}LP (${regionDisplayName})`
+    }
+    return `${tierDisplayName} ${user.rank} (${regionDisplayName})`
   }
 
   public findChatElement(): Element | null {
