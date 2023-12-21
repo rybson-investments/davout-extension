@@ -21,6 +21,49 @@ export abstract class Chat {
     this.config = config
   }
 
+  public tooltipText(user: UserSummonerRanking): string {
+    const rankLP =
+      user.tier === 'MASTER' || user.tier === 'GRANDMASTER' || user.tier === 'CHALLENGER'
+        ? ` - ${user.leaguePoints}LP`
+        : `${user.rank}`
+    const tierRankLP = `${user.tier?.toLowerCase()} ${rankLP}`
+    const region = `${(user.region === 'eun' ? 'EUNE' : user.region)?.toUpperCase()}`
+    return `${tierRankLP} (${region})`
+  }
+
+  public createTooltipElement(parent: HTMLElement) {
+    const tooltip = document.createElement('span')
+    tooltip.style.backgroundColor = '#fff'
+    tooltip.style.bottom = '130%'
+    tooltip.style.color = '#000'
+    tooltip.style.fontSize = 'var(--font-size-6)'
+    tooltip.style.fontWeight = 'var(--font-weight-semibold)'
+    tooltip.style.fontFamily = 'var(--font-base)'
+    tooltip.style.textTransform = 'capitalize'
+    tooltip.style.left = '-50%'
+    tooltip.style.marginLeft = '-100%'
+    tooltip.style.padding = '2px 4px'
+    tooltip.style.position = 'absolute'
+    tooltip.style.width = 'max-content'
+    tooltip.style.borderRadius = '5px'
+    tooltip.style.opacity = '0'
+    tooltip.style.visibility = 'hidden'
+    tooltip.style.transition = 'visibility 0s ease 0s, opacity .1s ease-in'
+
+    parent.style.position = 'relative'
+    parent.addEventListener('mouseenter', () => {
+      tooltip.style.opacity = '1'
+      tooltip.style.visibility = 'visible'
+    })
+
+    parent.addEventListener('mouseleave', () => {
+      tooltip.style.opacity = '0'
+      tooltip.style.visibility = 'hidden'
+    })
+
+    return tooltip
+  }
+
   public findChatElement(): Element | null {
     return document.querySelector(this.config.chatElementSelector)
   }

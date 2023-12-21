@@ -36,12 +36,14 @@ export class NativeChat extends Chat {
 
     iconElement.classList.add('chat-badge')
 
+    const tooltip = this.createTooltipElement(buttonElement)
+    buttonElement.appendChild(tooltip)
+
     if (userSummonerRanking.tier && userSummonerRanking.rank) {
+      const tooltipContent = this.tooltipText(userSummonerRanking)
+      tooltip.innerText = tooltipContent
       iconElement.src = chrome.runtime.getURL(`img/${userSummonerRanking.tier.toLowerCase()}.png`)
-      iconElement.ariaLabel = `${userSummonerRanking.tier} ${userSummonerRanking.rank}`
-    } else {
-      iconElement.src = chrome.runtime.getURL(`img/unranked.png`)
-      iconElement.ariaLabel = `N/A`
+      iconElement.ariaLabel = tooltipContent
     }
 
     buttonElement.appendChild(iconElement)
