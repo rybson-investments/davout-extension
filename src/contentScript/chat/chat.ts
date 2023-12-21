@@ -29,14 +29,17 @@ export abstract class Chat {
     if (user.region === 'euw') return 'EUW'
     if (user.region === 'eun') return 'EUNE'
 
-    return ''
+    return 'N/A'
   }
 
   public getTooltipText(user: UserSummonerRanking): string {
-    const rankLP = this.isAboveMasterTier(user) ? ` - ${user.leaguePoints}LP` : `${user.rank}`
-    const tierRankLPFormatted = `${user.tier?.toLowerCase()} ${rankLP}`
-    const region = this.getLolRegionDisplayName(user)
-    return `${tierRankLPFormatted} ${region}`
+    const regionDisplayName = this.getLolRegionDisplayName(user)
+    const tierDisplayName = user.tier?.toLowerCase()
+
+    if (this.isAboveMasterTier(user)) {
+      return `${tierDisplayName} - ${user.leaguePoints}LP (${regionDisplayName})`
+    }
+    return `${tierDisplayName} ${user.rank} (${regionDisplayName})`
   }
 
   public createTooltipElement(parent: HTMLElement) {
