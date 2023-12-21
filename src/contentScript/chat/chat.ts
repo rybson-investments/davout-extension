@@ -21,14 +21,22 @@ export abstract class Chat {
     this.config = config
   }
 
-  public tooltipText(user: UserSummonerRanking): string {
-    const rankLP =
-      user.tier === 'MASTER' || user.tier === 'GRANDMASTER' || user.tier === 'CHALLENGER'
-        ? ` - ${user.leaguePoints}LP`
-        : `${user.rank}`
-    const tierRankLP = `${user.tier?.toLowerCase()} ${rankLP}`
-    const region = `${(user.region === 'eun' ? 'EUNE' : user.region)?.toUpperCase()}`
-    return `${tierRankLP} (${region})`
+  public isAboveMasterTier(user: UserSummonerRanking): boolean {
+    return user.tier === 'MASTER' || user.tier === 'GRANDMASTER' || user.tier === 'CHALLENGER'
+  }
+
+  public getLolRegionDisplayName(user: UserSummonerRanking): string {
+    if (user.region === 'euw') return 'EUW'
+    if (user.region === 'eun') return 'EUNE'
+
+    return ''
+  }
+
+  public getTooltipText(user: UserSummonerRanking): string {
+    const rankLP = this.isAboveMasterTier(user) ? ` - ${user.leaguePoints}LP` : `${user.rank}`
+    const tierRankLPFormatted = `${user.tier?.toLowerCase()} ${rankLP}`
+    const region = this.getLolRegionDisplayName(user)
+    return `${tierRankLPFormatted} ${region}`
   }
 
   public createTooltipElement(parent: HTMLElement) {

@@ -34,7 +34,7 @@ export class SevenTvChat extends Chat {
     badgeElement.appendChild(tooltip)
 
     if (userSummonerRanking.tier && userSummonerRanking.rank) {
-      const tooltipContent = this.tooltipText(userSummonerRanking)
+      const tooltipContent = this.getTooltipText(userSummonerRanking)
       tooltip.innerText = tooltipContent
       iconElement.src = chrome.runtime.getURL(`img/${userSummonerRanking.tier.toLowerCase()}.png`)
       iconElement.ariaLabel = tooltipContent
