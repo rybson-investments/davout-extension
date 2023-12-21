@@ -13,6 +13,7 @@ export abstract class Chat {
   abstract appendBadgeElement(chatMessageElement: Element, badgeElement: Element): Element | null
   abstract getTwitchUsername(chatMessageElement: Element): string | null
   abstract createUserSummonerRankingBadgeElement(userSummonerRanking: UserSummonerRanking): Element
+  abstract createTooltipElement(): Element
 
   private chatObserver: MutationObserver | null = null
   private readonly config: ChatConfig
@@ -40,39 +41,6 @@ export abstract class Chat {
       return `${tierDisplayName} - ${user.leaguePoints}LP (${regionDisplayName})`
     }
     return `${tierDisplayName} ${user.rank} (${regionDisplayName})`
-  }
-
-  public createTooltipElement(parent: HTMLElement) {
-    const tooltip = document.createElement('span')
-    tooltip.style.backgroundColor = '#fff'
-    tooltip.style.bottom = '130%'
-    tooltip.style.color = '#000'
-    tooltip.style.fontSize = 'var(--font-size-6)'
-    tooltip.style.fontWeight = 'var(--font-weight-semibold)'
-    tooltip.style.fontFamily = 'var(--font-base)'
-    tooltip.style.textTransform = 'capitalize'
-    tooltip.style.left = '-50%'
-    tooltip.style.marginLeft = '-100%'
-    tooltip.style.padding = '2px 4px'
-    tooltip.style.position = 'absolute'
-    tooltip.style.width = 'max-content'
-    tooltip.style.borderRadius = '5px'
-    tooltip.style.opacity = '0'
-    tooltip.style.visibility = 'hidden'
-    tooltip.style.transition = 'visibility 0s ease 0s, opacity .1s ease-in'
-
-    parent.style.position = 'relative'
-    parent.addEventListener('mouseenter', () => {
-      tooltip.style.opacity = '1'
-      tooltip.style.visibility = 'visible'
-    })
-
-    parent.addEventListener('mouseleave', () => {
-      tooltip.style.opacity = '0'
-      tooltip.style.visibility = 'hidden'
-    })
-
-    return tooltip
   }
 
   public findChatElement(): Element | null {

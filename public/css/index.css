@@ -1,0 +1,66 @@
+.davout_has-tooltip {
+  position: relative;
+}
+
+.davout_has-tooltip .davout_tooltip-native {
+  opacity: 0;
+  visibility: hidden;
+  transition: visibility 0s ease 0s,opacity .1s ease-in;
+}
+
+.davout_has-tooltip .davout_tooltip-seven-tv {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.davout_has-tooltip:hover .davout_tooltip-native,
+.davout_has-tooltip:hover .davout_tooltip-seven-tv {
+  opacity: 1;
+  visibility: visible;
+}
+
+.davout_tooltip-native {
+  background-color: #fff;
+  bottom: 130%;
+  color: #000;
+  font-size: var(--font-size-6);
+  font-weight: var(--font-weight-semibold);
+  font-family: var(--font-base);
+  text-transform: capitalize;
+  left: 50%;
+  margin-left: calc(-50% - 10px);
+  padding: 2px 4px;
+  position: absolute;
+  width: max-content;
+  border-radius: 5px;
+}
+
+.davout_tooltip-native::after {
+  border-top: 5px solid #fff;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  bottom: -5px;
+  content: " ";
+  font-size: 0px;
+  left: 19px;
+  line-height: 0%;
+  margin-left: -4px;
+  position: absolute;
+  width: 0px;
+}
+
+.davout_tooltip-seven-tv {
+  color: var(--seventv-text-color-normal);
+  outline: 0.1em solid var(--seventv-border-transparent-1);
+  backdrop-filter: blur(0.25em);
+  -webkit-backdrop-filter: blur(.25em);
+  background-color: #00000002;
+  bottom: 130%;
+  text-transform: capitalize;
+  left: 50%;
+  margin-left: -100%;
+  padding: 2px 4px;
+  position: absolute;
+  width: max-content;
+  border-radius: 0.33em;
+}

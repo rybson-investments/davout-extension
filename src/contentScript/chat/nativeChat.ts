@@ -22,6 +22,13 @@ export class NativeChat extends Chat {
     return twitchUsername?.toLowerCase() || null
   }
 
+  public createTooltipElement() {
+    const tooltip = document.createElement('span')
+    tooltip.classList.add('davout_tooltip-native')
+
+    return tooltip
+  }
+
   public createUserSummonerRankingBadgeElement(userSummonerRanking: UserSummonerRanking): Element {
     const badgeElement = document.createElement('div')
 
@@ -36,7 +43,8 @@ export class NativeChat extends Chat {
 
     iconElement.classList.add('chat-badge')
 
-    const tooltip = this.createTooltipElement(buttonElement)
+    const tooltip = this.createTooltipElement()
+    buttonElement.classList.add('davout_has-tooltip')
     buttonElement.appendChild(tooltip)
 
     if (userSummonerRanking.tier && userSummonerRanking.rank) {

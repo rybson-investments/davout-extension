@@ -20,6 +20,7 @@ export default defineManifest({
     {
       matches: ['*://*.twitch.tv/*'],
       js: ['src/contentScript/index.ts'],
+      css: ['css/index.css'],
       run_at: 'document_end',
     },
   ],
@@ -36,6 +37,7 @@ export default defineManifest({
         'img/master.png',
         'img/grandmaster.png',
         'img/challenger.png',
+        'css/index.css',
       ],
       matches: ['*://*.twitch.tv/*'],
     },
