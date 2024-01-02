@@ -9,7 +9,5 @@ export default extendBaseManifest({
   },
   background: {
     scripts: ['src/background/index.ts'],
-    persistent: false,
-    type: 'module',
   },
 })

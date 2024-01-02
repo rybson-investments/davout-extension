@@ -1,6 +1,6 @@
 {
   "name": "davout",
-  "version": "1.5.0",
+  "version": "1.5.1",
   "author": "Rybson Investments",
   "description": "A browser extension for displaying League of Legends rank in the Twitch chat.",
   "type": "module",

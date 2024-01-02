@@ -17,3 +17,17 @@ npm install
 ```shell
 npm run dev
 ```
+
+# Build
+
+- Chrome build
+
+```shell
+npm run build:chrome
+```
+
+- Mozilla build
+
+```shell
+npm run build:chrome
+```
