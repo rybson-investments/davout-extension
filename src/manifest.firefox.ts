@@ -1,4 +1,6 @@
-export default {
+import { extendBaseManifest } from './manifest.base'
+
+export default extendBaseManifest({
   browser_specific_settings: {
     gecko: {
       id: 'contact@davout.io',
@@ -10,4 +12,4 @@ export default {
     persistent: false,
     type: 'module',
   },
-}
+})
