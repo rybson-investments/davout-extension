@@ -5,5 +5,5 @@
     "moduleResolution": "Node",
     "resolveJsonModule": true
   },
-  "include": ["vite.config.ts", "src/manifest.ts", "src/manifest.firefox.ts", "src/manifest.chrome.ts"]
+  "include": ["vite.config.ts", "src/manifest.base.ts", "src/manifest.firefox.ts", "src/manifest.chrome.ts"]
 }
