@@ -1,5 +1,3 @@
-import ky from 'ky'
-
 import { Cache } from '../cache/cache'
 import { CacheFactory } from '../cache/cacheFactory'
 import { Logger } from '../logger/logger'
@@ -26,10 +24,8 @@ export class UserSummonerRankingService {
     if (cachedUserSummonerRanking) {
       return cachedUserSummonerRanking
     }
-
-    const userSummonerRanking = await ky
-      .get(`https://api.davout.io/api/users/rankings/${twitchUsername}`)
-      .json<UserSummonerRanking>()
+    const response = await fetch(`https://api.davout.io/api/users/rankings/${twitchUsername}`)
+    const userSummonerRanking = await response.json()
 
     this.logger.debug('UserSummonerRanking found.', {
       twitchUsername,
