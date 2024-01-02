@@ -1,6 +1,6 @@
 {
   "name": "davout",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "author": "Rybson Investments",
   "description": "A browser extension for displaying League of Legends rank in the Twitch chat.",
   "type": "module",
@@ -11,18 +11,21 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
+    "build:chrome": "set BROWSER_TARGET=chrome&& npm run build",
+    "build:firefox": "set BROWSER_TARGET=firefox&& npm run build",
     "preview": "vite preview",
     "fmt": "prettier --write '**/*.{ts,json,css,scss,md}'"
   },
   "dependencies": {
-    "eventemitter3": "^5.0.1",
-    "ky": "^1.1.3"
+    "eventemitter3": "^5.0.1"
   },
   "devDependencies": {
     "@crxjs/vite-plugin": "^2.0.0-beta.19",
     "@types/chrome": "^0.0.254",
+    "@types/node": "^20.10.6",
     "prettier": "^3.1.1",
     "typescript": "^5.3.3",
-    "vite": "^4.5.1"
+    "vite": "^4.5.1",
+    "vite-plugin-zip-pack": "^1.0.7"
   }
 }

@@ -1,20 +1,22 @@
-import { defineManifest } from '@crxjs/vite-plugin'
-
+import { ManifestV3Export, defineManifest } from '@crxjs/vite-plugin'
 import packageData from '../package.json'
 
-export default defineManifest({
+export const extendBaseManifest = (manifest: Partial<ManifestV3Export>) =>
+  defineManifest({
+    ...baseManifest,
+    ...manifest,
+  })
+
+const baseManifest = {
   name: 'Davout',
   description: packageData.description,
   version: packageData.version,
   manifest_version: 3,
   icons: {
     16: 'icons/logo-16.png',
-    32: 'icons/logo-34.png',
+    32: 'icons/logo-32.png',
     48: 'icons/logo-48.png',
     128: 'icons/logo-128.png',
-  },
-  background: {
-    service_worker: 'src/background/index.ts',
   },
   content_scripts: [
     {
@@ -46,4 +48,4 @@ export default defineManifest({
   externally_connectable: {
     matches: ['https://davout.io/*'],
   },
-})
+}
