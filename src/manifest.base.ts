@@ -39,6 +39,7 @@ const baseManifest = {
         'img/master.png',
         'img/grandmaster.png',
         'img/challenger.png',
+        'img/unranked.png',
         'css/index.css',
       ],
       matches: ['*://*.twitch.tv/*'],

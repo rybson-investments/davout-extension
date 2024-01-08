@@ -38,4 +38,6 @@ export default defineConfig(() => {
   if (browserTarget === 'firefox') {
     return prepareConfig(firefoxManifest)
   }
+
+  return prepareConfig(chromeManifest)
 })
