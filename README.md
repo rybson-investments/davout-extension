@@ -29,5 +29,5 @@ npm run build:chrome
 - Mozilla build
 
 ```shell
-npm run build:chrome
+npm run build:firefox
 ```
