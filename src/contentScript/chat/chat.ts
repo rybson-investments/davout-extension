@@ -26,6 +26,10 @@ export abstract class Chat {
     return user.tier === 'MASTER' || user.tier === 'GRANDMASTER' || user.tier === 'CHALLENGER'
   }
 
+  public isUnranked(user: UserSummonerRanking): boolean {
+    return user.tier === 'UNRANKED'
+  }
+
   public getLolRegionDisplayName(user: UserSummonerRanking): string {
     if (user.region === 'euw') return 'EUW'
     if (user.region === 'eun') return 'EUNE'
@@ -40,6 +44,11 @@ export abstract class Chat {
     if (this.isAboveMasterTier(user)) {
       return `${tierDisplayName} - ${user.leaguePoints}LP (${regionDisplayName})`
     }
+
+    if (this.isUnranked(user)) {
+      return `${tierDisplayName} (${regionDisplayName})`
+    }
+
     return `${tierDisplayName} ${user.rank} (${regionDisplayName})`
   }
 
