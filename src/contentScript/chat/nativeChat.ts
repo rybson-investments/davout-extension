@@ -7,7 +7,9 @@ export class NativeChat extends Chat {
   }
 
   public appendBadgeElement(chatMessageElement: Element, badgeElement: Element): Element | null {
-    const iconContainerElement = chatMessageElement.querySelector('.chat-line__username-container span')
+    const iconContainerElement =
+      chatMessageElement.querySelector('.chat-line__username-container span') ||
+      chatMessageElement.querySelector('.chat-line__message--badges')
 
     if (iconContainerElement) {
       iconContainerElement.appendChild(badgeElement)
@@ -17,7 +19,8 @@ export class NativeChat extends Chat {
   }
 
   public getTwitchUsername(chatMessageElement: Element): string | null {
-    const twitchUsername = chatMessageElement.getAttribute('data-a-user')
+    const twitchUsername =
+      chatMessageElement.getAttribute('data-a-user') || chatMessageElement.getAttribute('data-user')
 
     return twitchUsername?.toLowerCase() || null
   }
