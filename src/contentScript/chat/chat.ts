@@ -14,6 +14,7 @@ export abstract class Chat {
   abstract getTwitchUsername(chatMessageElement: Element): string | null
   abstract createUserSummonerRankingBadgeElement(userSummonerRanking: UserSummonerRanking): Element
   abstract createTooltipElement(): Element
+  abstract getLineMessageElement(mutationNodeElement: Element): Element | null
 
   private chatObserver: MutationObserver | null = null
   private readonly config: ChatConfig
@@ -73,8 +74,8 @@ export abstract class Chat {
 
       for (const mutation of mutationList) {
         if (mutation.type === 'childList' && mutation.addedNodes.length) {
-          const chatMessageElement = mutation.addedNodes[0] as Element
-
+          const chatMessageElement = this.getLineMessageElement(mutation.addedNodes[0] as Element)
+          
           if (chatMessageElement && chatMessageElement.tagName === 'DIV') {
             onChatMessage(chatMessageElement)
           }
