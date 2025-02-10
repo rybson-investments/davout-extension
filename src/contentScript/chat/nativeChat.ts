@@ -6,6 +6,10 @@ export class NativeChat extends Chat {
     super({ chatElementSelector: '.chat-scrollable-area__message-container' })
   }
 
+  public getLineMessageElement(mutationNodeElement: Element): Element | null {
+    return mutationNodeElement.querySelector('.chat-line__message')
+  }
+
   public appendBadgeElement(chatMessageElement: Element, badgeElement: Element): Element | null {
     const iconContainerElement = chatMessageElement.querySelector('.chat-line__username-container span')
 

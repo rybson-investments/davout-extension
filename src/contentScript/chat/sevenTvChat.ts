@@ -6,6 +6,10 @@ export class SevenTvChat extends Chat {
     super({ chatElementSelector: '#seventv-message-container > main' })
   }
 
+  public getLineMessageElement(mutationNodeElement: Element): Element | null {
+    return mutationNodeElement;
+  }
+
   public getTwitchUsername(chatMessageElement: Element): string | null {
     const twitchUsername = chatMessageElement.querySelector('.seventv-chat-user-username span span')?.innerHTML
 
