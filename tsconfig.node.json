@@ -1,9 +1,0 @@
-{
-  "compilerOptions": {
-    "composite": true,
-    "module": "ESNext",
-    "moduleResolution": "Node",
-    "resolveJsonModule": true
-  },
-  "include": ["vite.config.ts", "src/manifest.base.ts", "src/manifest.firefox.ts", "src/manifest.chrome.ts"]
-}

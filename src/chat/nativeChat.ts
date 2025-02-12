@@ -1,23 +1,18 @@
 import { UserSummonerRanking } from '../userSummonerRanking/userSummonerRanking'
 import { Chat } from './chat'
 
-export class SevenTvChat extends Chat {
+export class NativeChat extends Chat {
   constructor() {
-    super({ chatElementSelector: '#seventv-message-container > main' })
+    super({ chatElementSelector: '.chat-scrollable-area__message-container' })
   }
 
   public getLineMessageElement(mutationNodeElement: Element): Element | null {
-    return mutationNodeElement;
-  }
-
-  public getTwitchUsername(chatMessageElement: Element): string | null {
-    const twitchUsername = chatMessageElement.querySelector('.seventv-chat-user-username span span')?.innerHTML
-
-    return twitchUsername?.toLowerCase() || null
+    return mutationNodeElement.querySelector('.chat-line__message')
   }
 
   public appendBadgeElement(chatMessageElement: Element, badgeElement: Element): Element | null {
-    const iconContainerElement = chatMessageElement.querySelector('.seventv-chat-user-badge-list')
+    const iconContainerElement = chatMessageElement.querySelector('.chat-line__username-container span')
+
     if (iconContainerElement) {
       iconContainerElement.appendChild(badgeElement)
     }
@@ -25,9 +20,15 @@ export class SevenTvChat extends Chat {
     return iconContainerElement
   }
 
+  public getTwitchUsername(chatMessageElement: Element): string | null {
+    const twitchUsername = chatMessageElement.getAttribute('data-a-user')
+
+    return twitchUsername?.toLowerCase() || null
+  }
+
   public createTooltipElement() {
     const tooltip = document.createElement('span')
-    tooltip.classList.add('davout_tooltip-seven-tv')
+    tooltip.classList.add('davout_tooltip-native')
 
     return tooltip
   }
@@ -36,22 +37,30 @@ export class SevenTvChat extends Chat {
     const badgeElement = document.createElement('div')
 
     badgeElement.style.display = 'inline'
-    badgeElement.style.marginLeft = '0.25rem'
-    badgeElement.classList.add('seventv-chat-badge', 'davout_has-tooltip')
+    badgeElement.style.backgroundColor = '#2f2f2f2'
+
+    const buttonElement = document.createElement('button')
+
+    buttonElement.dataset.aTarget = 'chat-badge'
 
     const iconElement = document.createElement('img')
 
+    iconElement.classList.add('chat-badge')
+
     const tooltip = this.createTooltipElement()
-    badgeElement.appendChild(tooltip)
+    buttonElement.classList.add('davout_has-tooltip')
+    buttonElement.appendChild(tooltip)
 
     if (userSummonerRanking.tier && userSummonerRanking.rank) {
       const tooltipContent = this.getTooltipText(userSummonerRanking)
       tooltip.innerText = tooltipContent
-      iconElement.src = chrome.runtime.getURL(`img/${userSummonerRanking.tier.toLowerCase()}.png`)
+      iconElement.src = browser.runtime.getURL(`img/${userSummonerRanking.tier.toLowerCase()}.png`)
       iconElement.ariaLabel = tooltipContent
     }
 
-    badgeElement.appendChild(iconElement)
+    buttonElement.appendChild(iconElement)
+
+    badgeElement.appendChild(buttonElement)
 
     return badgeElement
   }
