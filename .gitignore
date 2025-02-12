@@ -18,6 +18,8 @@
 .env.production.local
 .history
 *.log
+.wxt
+.output
 
 # secrets
 secrets.*.js

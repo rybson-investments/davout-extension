@@ -75,7 +75,7 @@ export abstract class Chat {
       for (const mutation of mutationList) {
         if (mutation.type === 'childList' && mutation.addedNodes.length) {
           const chatMessageElement = this.getLineMessageElement(mutation.addedNodes[0] as Element)
-          
+
           if (chatMessageElement && chatMessageElement.tagName === 'DIV') {
             onChatMessage(chatMessageElement)
           }
