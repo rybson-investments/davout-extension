@@ -23,11 +23,11 @@ npm run dev
 - Chrome build
 
 ```shell
-npm run build:chrome
+npm run zip:chrome
 ```
 
 - Mozilla build
 
 ```shell
-npm run build:firefox
+npm run zip:firefox
 ```

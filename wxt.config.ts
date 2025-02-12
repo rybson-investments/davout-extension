@@ -41,4 +41,16 @@ export default defineConfig({
   runner: {
     startUrls: ['https://www.twitch.tv/h2p_gucio/chat'],
   },
+  hooks: {
+    'build:manifestGenerated': (wxt, manifest) => {
+      if (wxt.config.browser === 'firefox') {
+        manifest.browser_specific_settings = {
+          gecko: {
+            id: 'temp@davout',
+            strict_min_version: '109.0',
+          }
+        }
+      }
+    }
+  }
 })
